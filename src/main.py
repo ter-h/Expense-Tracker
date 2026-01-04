@@ -1,4 +1,5 @@
 import argparse
+from ExpenseManager import ExpenseManager
 
 def main():
     parser = argparse.ArgumentParser(
@@ -20,8 +21,6 @@ def main():
         type=float,
         help="amount"
     )
-
-    add_p.add_argument()
 
     # Update
     update_p = sub.add_parser("update", help="Update expense amount or description")
@@ -60,3 +59,26 @@ def main():
         help="year"
     )
     
+    args = parser.parse_args()
+    expenses = ExpenseManager()
+    try:
+        if args.command == "add":
+            t = expenses.expense_add(args.description, args.amount)
+            print(f"Expense added successfully (ID: {t.id})")
+
+        elif args.command == "update":
+            expenses.expense_update(args.id, args.description, args.amount)
+            print("Expense updated.")
+
+        elif args.command == "delete":
+            expenses.expense_delete(args.id)
+            print("Expense deleted.")
+
+        elif args.command == "list":
+            expenses.expense_list(args.amount)
+        
+        elif args.command == "summary":
+            expenses.expense_summary(args.amount, args.month, args.year)
+        
+    except ValueError as e:
+        return e
