@@ -1,5 +1,6 @@
 import argparse
 from ExpenseManager import ExpenseManager
+import re
 
 def main():
     parser = argparse.ArgumentParser(
@@ -32,7 +33,7 @@ def main():
     )
     update_p.add_argument(
         "-a", "--amount",
-        type=float,
+        type=parse_amount,
         help="amount"
     )
 
@@ -51,7 +52,9 @@ def main():
     summary_p.add_argument(
         "-m", "--month",
         type=int,
-        help="month"
+        choices=range(1, 13),
+        metavar="1-12",
+        help="Filter by month (1-12, requires --year)"
     )
     summary_p.add_argument(
         "-y", "--year",
@@ -75,6 +78,9 @@ def main():
             print("Expense deleted.")
 
         elif args.command == "list":
+            if args.amount:
+                parse_amount(args.amount)
+                
             expenses.expense_list(args.amount)
         
         elif args.command == "summary":
@@ -82,3 +88,15 @@ def main():
         
     except ValueError as e:
         return e
+    
+
+def parse_amount(value):
+    match = re.fullmatch(r"(<=|>=|<|>)\s*(\d+(\.\d+)?)", value)
+    if not match:
+        raise argparse.ArgumentTypeError(
+            'Amount must be like "<10", "<=10", ">5", ">=5.5"'
+        )
+
+    op = match.group(1)
+    amount = float(match.group(2))
+    return op, amount
