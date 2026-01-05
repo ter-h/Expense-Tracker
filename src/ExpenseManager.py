@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 from Expense import Expense
+from not_found_error import NotFoundError
+from incorrect_field_value import IncorrectFieldValue
 import operator
 
 class ExpenseManager:
@@ -13,16 +15,20 @@ class ExpenseManager:
         self._id_count = 0
         self.load_from_file()
 
-    def expense_add(self, desc, amnt):
+    def expense_add(self, desc, amnt=0):
+        if desc is None:
+            raise IncorrectFieldValue("Must enter description")
+        if amnt is None:
+            amnt = 0
         new_expense = Expense(self._id_count, desc, amnt)
         self.expenses.append(new_expense)
         self._id_count += 1
         self.save_to_file()
         return new_expense
-
+      
     def expense_update(self, id, desc=None, amnt=None):
         expense = self._find_expense(id)
-        expense.expense_update(desc)
+        expense.expense_update(desc, amnt)
         self.save_to_file()
 
     def expense_delete(self, id):
@@ -46,7 +52,7 @@ class ExpenseManager:
         cmp = ops[op]
         return [e for e in self.expenses if cmp(e.amount, value)]
     
-    def summary(self, year=None, month=None):
+    def expense_summary(self, year=None, month=None):
         """
         Returns total expense amount.
         - year: int or None
@@ -60,8 +66,16 @@ class ExpenseManager:
         if month is not None:
             expenses = [e for e in expenses if e.date.month == month]
 
+
         return sum(e.amount for e in expenses)
 
+
+    def _find_expense(self, id):
+        for t in self.expenses:
+            if t.id == id:
+                return t
+        raise NotFoundError(f"Expense with ID {id} does not exist.")
+    
     def save_to_file(self):
         with self.data_file.open('w') as f:
             json.dump([t.to_dict() for t in self.expenses], f, indent=2)

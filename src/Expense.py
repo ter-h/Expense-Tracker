@@ -1,20 +1,19 @@
-from datetime import date
-from context_doesnt_exist import ContextDoesntExist
+from datetime import datetime
+from incorrect_field_value import IncorrectFieldValue
 
 class Expense:
-    def __init__(self, id, description, amount, date):
+    def __init__(self, id, description, amount, date=None):
         self.id = id
         self.description = description
         self.amount = amount
-        self.date = date or date.now()
+        self.date = date or datetime.now()
 
     def expense_update(self, new_desc=None, new_amnt=None):
         if new_desc is None and new_amnt is None:
-            raise ContextDoesntExist
+            raise IncorrectFieldValue("Must enter either description or amount field")
         self.description = new_desc
         self.amnt = new_amnt
         
-
 
     def to_dict(self):
         return {
@@ -30,5 +29,5 @@ class Expense:
             id=data["id"],
             description=data["description"],
             amount=data["amount"],
-            date=date.fromisoformat(data["date"])
+            date=datetime.fromisoformat(data["date"])
         )
