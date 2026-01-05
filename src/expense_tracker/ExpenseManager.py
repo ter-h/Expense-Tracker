@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
-from Expense import Expense
-from not_found_error import NotFoundError
-from incorrect_field_value import IncorrectFieldValue
+from expense_tracker.Expense import Expense
+from expense_tracker.not_found_error import NotFoundError
+from expense_tracker.incorrect_field_value import IncorrectFieldValue
 import operator
 
 class ExpenseManager:

@@ -1,5 +1,5 @@
 from datetime import datetime
-from incorrect_field_value import IncorrectFieldValue
+from expense_tracker.incorrect_field_value import IncorrectFieldValue
 
 class Expense:
     def __init__(self, id, description, amount, date=None):

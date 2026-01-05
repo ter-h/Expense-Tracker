@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 import argparse
-from ExpenseManager import ExpenseManager
+from expense_tracker.ExpenseManager import ExpenseManager
 import re
 from tabulate import tabulate
-from incorrect_field_value import IncorrectFieldValue
-from not_found_error import NotFoundError
+from expense_tracker.incorrect_field_value import IncorrectFieldValue
+from expense_tracker.not_found_error import NotFoundError
 
 def main():
     parser = argparse.ArgumentParser(
