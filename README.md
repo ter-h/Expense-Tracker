@@ -23,18 +23,18 @@ This is a lightweight command-line interface (CLI) application for tracking expe
 
   ## Usage
 
-```
+```bash
 expense-tracker add -d <description> -a <amount>
 ```
-```
+```bash
 expense_tracker update <id> [-d <description>] [-a <amount>]
 ```
-```
+```bash
 expense_tracker delete <id>
 ```
-```
+```bash
 expense_tracker list [-a "<op><amount>"]
 ```
-```
+```bash
 expense_tracker summary [-y <year>] [-m <month>]
 ```
