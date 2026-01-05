@@ -1,1 +1,2 @@
-src/__pycache__/
+src/expense_tracker/__pycache__/
+src/expense_tracker/expense_tracker.egg-info
